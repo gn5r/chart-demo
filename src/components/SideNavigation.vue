@@ -1,6 +1,6 @@
 <template>
   <v-card :width="width" :height="height" :dark="dark" tile>
-    <v-navigation-drawer>
+    <v-navigation-drawer permanent>
       <v-list-item class="light-green">
         <v-list-item-content>
           <v-list-item-title class="text-h5 text-center"
@@ -24,6 +24,7 @@
             v-model="internalValue"
             class="pl-4"
             :color="color"
+            mandatory
           >
             <v-list-item
               v-for="child in item.items"
