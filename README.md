@@ -25,4 +25,4 @@ yarn test:unit
 yarn lint
 ```
 
-### (Demo)[https://gn5r.github.io/chart-demo]
+### [Demo](https://gn5r.github.io/chart-demo)
