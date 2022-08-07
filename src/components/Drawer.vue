@@ -1,44 +1,32 @@
 <template>
-  <v-navigation-drawer
-    v-model="drawer"
-    :width="width"
-    :dark="dark"
-    app
-    floating
-  >
+  <v-navigation-drawer v-model="drawer" :width="width" dark app floating>
     <template v-slot:prepend>
-      <v-toolbar class="v-bar--underline light-green" flat>
+      <v-toolbar class="v-bar--underline" color="light-green" flat>
         <v-list-item>
           <v-list-item-content>
-            <v-list-item-title class="text-h5 text-center"
-              >Chart-Demo</v-list-item-title
-            >
+            <v-list-item-title class="text-h5">Chart-Demo</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-toolbar>
     </template>
-    <v-list dense>
+    <v-list dense nav expand flat>
       <v-list-group
         v-for="item in items"
         :key="item.title"
         :value="true"
-        active-class="light-blue--text text--lighten-1"
+        active-class="light-blue--text"
       >
         <template v-slot:activator>
           <v-list-item-content>
             <v-list-item-title class="text-h6" v-text="item.title" />
           </v-list-item-content>
         </template>
-        <v-list-item-group
-          v-model="internalValue"
-          class="pl-4"
-          :color="color"
-          mandatory
-        >
+        <v-list-item-group v-model="internalValue" class="pl-4" mandatory>
           <v-list-item
             v-for="child in item.items"
             :key="child.title"
             :value="child.component"
+            active-class="light-green--text"
           >
             <v-list-item-icon>
               <v-icon v-text="child.icon" />
@@ -50,17 +38,6 @@
         </v-list-item-group>
       </v-list-group>
     </v-list>
-    <template v-slot:append>
-      <v-divider />
-      <v-list-item>
-        <div>
-          <v-btn icon @click="darkMode = !darkMode">
-            <v-icon v-if="darkMode">mdi-brightness-3</v-icon>
-            <v-icon v-else>mdi-brightness-7</v-icon>
-          </v-btn>
-        </div>
-      </v-list-item>
-    </template>
   </v-navigation-drawer>
 </template>
 
@@ -83,10 +60,6 @@ export default Vue.extend({
     width: {
       type: String,
       default: "256",
-    },
-    dark: {
-      type: Boolean,
-      default: true,
     },
     color: {
       type: String,
@@ -114,10 +87,7 @@ export default Vue.extend({
         return this.lazyValue;
       },
     },
-    darkMode: {
-      set(val: boolean) {
-        this.$vuetify.theme.dark = val;
-      },
+    dark: {
       get(): boolean {
         return this.$vuetify.theme.dark;
       },
