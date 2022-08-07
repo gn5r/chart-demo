@@ -3,7 +3,7 @@
     <header-bar v-model="drawer" />
     <drawer v-model="component" :active.sync="drawer" :items="items" />
     <v-main>
-      <radar-chart />
+      <component :is="component" />
     </v-main>
   </v-app>
 </template>
