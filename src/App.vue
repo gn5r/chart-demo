@@ -1,10 +1,9 @@
 <template>
   <v-app>
+    <header-bar v-model="drawer" />
+    <drawer v-model="component" :active.sync="drawer" :items="items" />
     <v-main>
-      <div class="d-flex" style="height: 100%">
-        <side-navigation v-model="component" ref="nav" :items="items" />
-        <component :is="component" :style="contentsStyle" />
-      </div>
+      <radar-chart />
     </v-main>
   </v-app>
 </template>
@@ -12,7 +11,8 @@
 <script lang="ts">
 import Vue from "vue";
 import { Navigation } from "types";
-import SideNavigation from "@/components/SideNavigation.vue";
+import HeaderBar from "@/components/HeaderBar.vue";
+import Drawer from "@/components/Drawer.vue";
 import RadarChart from "@/views/RadarChart.vue";
 
 export default Vue.extend({
@@ -21,6 +21,7 @@ export default Vue.extend({
   mixins: [],
   props: {},
   data: () => ({
+    drawer: false,
     component: "radar-chart",
     items: [
       {
@@ -38,21 +39,17 @@ export default Vue.extend({
   }),
   methods: {},
   created() {
-    //
+    this.drawer = !this.isMobile;
   },
   computed: {
-    contentsStyle() {
-      const { nav } = this.$refs;
-      const navWidth = nav !== undefined ? (nav as any).width : "0px";
-      return {
-        height: "100%",
-        width: `calc(100% - ${navWidth})`,
-      };
+    isMobile(): boolean {
+      return this.$vuetify.breakpoint.mobile;
     },
   },
   watch: {},
   components: {
-    SideNavigation,
+    HeaderBar,
+    Drawer,
     RadarChart,
   },
 });
