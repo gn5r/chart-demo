@@ -1,4 +1,14 @@
-@import "vuetify/src/styles/settings/_colors"
+@import "vuetify/src/styles/styles.sass"
 
 .theme--dark.v-application
   background: map-get($grey, 'darken-3')
+
+.theme--dark .v-bar--underline,
+.theme--light .v-bar--underline
+  border-width: 0 0 thin
+  border-style: solid
+
+.theme--dark .v-bar--underline.theme--light,
+.theme--light .v-bar--underline.theme--light
+  border-bottom-color: map-get($grey, 'lighten-2') !important
+  // border-bottom-color: rgba(0,0,0,.12)!important
