@@ -14,6 +14,15 @@
     <v-toolbar-items>
       <v-tooltip bottom>
         <template v-slot:activator="{ on }">
+          <v-btn v-on="on" icon @click="dark = !dark">
+            <v-icon v-if="dark">mdi-brightness-3</v-icon>
+            <v-icon v-else>mdi-brightness-7</v-icon>
+          </v-btn>
+        </template>
+        <span>テーマ</span>
+      </v-tooltip>
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
           <v-btn v-on="on" icon>
             <v-icon>fa-brands fa-github</v-icon>
           </v-btn>
@@ -61,6 +70,9 @@ export default Vue.extend({
       },
     },
     dark: {
+      set(val: boolean) {
+        this.$vuetify.theme.dark = val;
+      },
       get(): boolean {
         return this.$vuetify.theme.dark;
       },
