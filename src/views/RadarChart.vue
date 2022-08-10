@@ -58,15 +58,8 @@ export default Vue.extend({
       },
       tooltips: {
         callbacks: {
-          title(item, data) {
-            console.debug("tooltip title:", item, data);
-            return data.labels?.[item[0].index || 0];
-          },
-          label(item, data) {
-            const label = data.datasets?.[item.datasetIndex || 0].label || "";
-            console.debug("tooltip afterLabel:", item, data);
-            return `${label}: ${item.value}点`;
-          }
+          title: (item, data) => data.labels?.[item[0].index || 0],
+          label: (item) => `${item.value}点`,
         },
       },
     } as ChartOptions,
