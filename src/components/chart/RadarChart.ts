@@ -47,11 +47,38 @@ export default Vue.extend({
       default: () => [],
     },
   },
-  data: () => ({}),
+  data() {
+    return {
+      lazyOptions: this.options,
+    };
+  },
   methods: {},
-  computed: {},
-  watch: {},
+  computed: {
+    chartOptions: {
+      set(val: any) {
+        this.lazyOptions = val;
+        if (val["responsive"] === undefined) {
+          this.lazyOptions["responsive"] = true;
+        }
+        this.$emit("update:options", this.lazyOptions);
+      },
+      get(): any {
+        return this.lazyOptions;
+      },
+    },
+  },
+  watch: {
+    options: {
+      handler(val) {
+        this.chartOptions = val;
+      },
+      deep: true,
+    },
+  },
   mounted() {
-    (this as any).renderChart(this.chartData, this.options);
+    if (this.chartOptions["responsive"] === undefined) {
+      this.chartOptions["responsive"] = true;
+    }
+    (this as any).renderChart(this.chartData, this.chartOptions);
   },
 });

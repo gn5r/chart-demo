@@ -3,15 +3,16 @@
     <v-card height="100%" width="100%" flat>
       <v-row justify="start" aling="center">
         <v-col cols="2">
-          <v-btn color="info" @click="setChartData">データ取得</v-btn>
+          <v-btn color="info" @click="setChartData">データ更新</v-btn>
         </v-col>
       </v-row>
       <v-row justify="start" align="center">
         <v-col cols="12" lg="6" sm="6">
           <v-card :height="height" :width="width">
             <radar
-              v-if="show"
+              v-show="show"
               :chart-data="chartData"
+              :options.sync="options"
               :height="height"
               :width="width"
             />
@@ -26,6 +27,7 @@
 <script lang="ts">
 import Vue from "vue";
 import Radar from "@/components/chart/RadarChart";
+import { ChartData, ChartOptions, ChartPoint } from "chart.js";
 
 export default Vue.extend({
   name: "radar-chart",
@@ -33,11 +35,45 @@ export default Vue.extend({
   mixins: [],
   props: {},
   data: () => ({
-    chartData: null as any,
+    chartData: {
+      labels: ["国語", "数学", "理科", "英語", "社会"],
+      datasets: [
+        {
+          label: "点数",
+          // fill: false,
+          backgroundColor: "rgba(255,99,132,0.2)",
+          borderColor: "rgba(255,99,132,1)",
+          pointBackgroundColor: "rgba(255,99,132,1)",
+          pointBorderColor: "#fff",
+          pointHoverBackgroundColor: "#fff",
+          pointHoverBorderColor: "rgba(255,99,132,1)",
+          data: [50, 50, 50, 50, 50],
+        },
+      ],
+    } as ChartData,
+    options: {
+      r: {
+        min: 0,
+        max: 100,
+      },
+      tooltips: {
+        callbacks: {
+          title(item, data) {
+            console.debug("tooltip title:", item, data);
+            return data.labels?.[item[0].index || 0];
+          },
+          label(item, data) {
+            const label = data.datasets?.[item.datasetIndex || 0].label || "";
+            console.debug("tooltip afterLabel:", item, data);
+            return `${label}: ${item.value}点`;
+          }
+        },
+      },
+    } as ChartOptions,
     height: 400,
     width: 400,
     loading: false,
-    show: false,
+    show: true,
   }),
   methods: {
     createRandomData(n = 5) {
@@ -49,8 +85,8 @@ export default Vue.extend({
       // ajax風
       setTimeout(() => {
         this.loading = false;
-        this.chartData = {
-          labels: ["国語", "数学", "理科", "英語", "社会"],
+        this.$set(this, "chartData", {
+          ...this.chartData,
           datasets: [
             {
               label: "点数",
@@ -63,8 +99,7 @@ export default Vue.extend({
               data: this.createRandomData(),
             },
           ],
-        };
-        this.show = true;
+        });
       }, 3000);
     },
   },
